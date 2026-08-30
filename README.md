@@ -2,7 +2,6 @@
 
 **[ English ](README.md) · [ Español ](README.es.md)**
 
-[![npm version](https://img.shields.io/npm/v/opencode-antigravity-auth.svg)](https://www.npmjs.com/package/opencode-antigravity-auth)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Enable Opencode to authenticate against **Antigravity** (Google's IDE) via OAuth so you can use Antigravity rate limits and access models like `gemini-3.1-pro`, `gemini-3.7-flash` and `claude-opus-4-6-thinking` with your Google credentials.

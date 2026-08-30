@@ -1,8 +1,7 @@
-﻿# Plugin de Autenticación OAuth Antigravity + Gemini CLI para OpenCode
+# Plugin de Autenticación OAuth Antigravity + Gemini CLI para OpenCode
 
 **[ English ](README.md) · [ Español ](README.es.md)**
 
-[![npm version](https://img.shields.io/npm/v/opencode-antigravity-auth.svg)](https://www.npmjs.com/package/opencode-antigravity-auth)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Permite a OpenCode autenticarse contra **Antigravity** (el IDE de Google) mediante OAuth para aprovechar los límites de cuota de Antigravity y acceder a modelos como `gemini-3.7-flash`, `gemini-3.1-pro` y `claude-opus-4-6-thinking` utilizando tus credenciales de Google.

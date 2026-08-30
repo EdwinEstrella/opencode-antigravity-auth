@@ -1,5 +1,7 @@
 # Antigravity + Gemini CLI OAuth Plugin for Opencode
 
+**[ English ](README.md) · [ Español ](README.es.md)**
+
 [![npm version](https://img.shields.io/npm/v/opencode-antigravity-auth.svg)](https://www.npmjs.com/package/opencode-antigravity-auth)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -694,12 +696,13 @@ See the full [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for solutions to c
 
 If this plugin saves you time, consider supporting its development:
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S81QBOIR)
+[Support the project](https://ko-fi.com/S6S81QBOIR)
 
 ---
 
 ## Credits
-
+ 
+- [Noé Fabris](https://github.com/NoeFabris) — Original author and creator of [opencode-antigravity-auth](https://github.com/NoeFabris/opencode-antigravity-auth)
 - [opencode-gemini-auth](https://github.com/jenslys/opencode-gemini-auth) by [@jenslys](https://github.com/jenslys)
 - [CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI)
 

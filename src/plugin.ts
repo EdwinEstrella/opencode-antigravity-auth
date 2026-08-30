@@ -11,7 +11,7 @@ import {
 import { authorizeAntigravity, exchangeAntigravity } from "./antigravity/oauth";
 import type { AntigravityTokenExchangeResult } from "./antigravity/oauth";
 import { accessTokenExpired, isOAuthAuth, parseRefreshParts, formatRefreshParts } from "./plugin/auth";
-import { promptAddAnotherAccount, promptLoginMode, promptProjectId } from "./plugin/cli";
+import { promptAddAnotherAccount, promptLoginMode, promptPressEnter, promptProjectId } from "./plugin/cli";
 import { ensureProjectContext } from "./plugin/project";
 import {
   startAntigravityDebugRequest, 
@@ -2692,6 +2692,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
                     await saveAccounts(existingStorage);
                   }
                   console.log("");
+                  await promptPressEnter("Press Enter to return to menu...");
                   continue;
                 }
 
@@ -2714,6 +2715,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
                   if (verifyAll) {
                     if (existingStorage.accounts.length === 0) {
                       console.log("\nNo accounts available to verify.\n");
+                      await promptPressEnter("Press Enter to return to menu...");
                       continue;
                     }
 
@@ -2793,6 +2795,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
                       console.log("");
                     }
 
+                    await promptPressEnter("Press Enter to return to menu...");
                     continue;
                   }
 
@@ -2803,12 +2806,14 @@ export const createAntigravityPlugin = (providerId: string) => async (
 
                   if (verifyAccountIndex === undefined) {
                     console.log("\nVerification cancelled.\n");
+                    await promptPressEnter("Press Enter to return to menu...");
                     continue;
                   }
 
                   const account = existingStorage.accounts[verifyAccountIndex];
                   if (!account) {
                     console.log(`\nAccount ${verifyAccountIndex + 1} not found.\n`);
+                    await promptPressEnter("Press Enter to return to menu...");
                     continue;
                   }
 
@@ -2829,6 +2834,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
                     } else {
                       console.log(`✓ ${label} is ready for requests.\n`);
                     }
+                    await promptPressEnter("Press Enter to return to menu...");
                     continue;
                   }
 
@@ -2866,10 +2872,12 @@ export const createAntigravityPlugin = (providerId: string) => async (
                     } else {
                       console.log("No verification URL was returned. Try re-authenticating this account.\n");
                     }
+                    await promptPressEnter("Press Enter to return to menu...");
                     continue;
                   }
 
                   console.log(`✗ ${label}: ${verification.message}\n`);
+                  await promptPressEnter("Press Enter to return to menu...");
                   continue;
                 }
 

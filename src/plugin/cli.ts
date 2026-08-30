@@ -30,6 +30,15 @@ export async function promptAddAnotherAccount(currentCount: number): Promise<boo
   }
 }
 
+export async function promptPressEnter(message = "Press Enter to continue..."): Promise<void> {
+  const rl = createInterface({ input, output });
+  try {
+    await rl.question(`\n${message}`);
+  } finally {
+    rl.close();
+  }
+}
+
 export type LoginMode = "add" | "fresh" | "manage" | "check" | "verify" | "verify-all" | "cancel";
 
 export interface ExistingAccountInfo {
@@ -149,6 +158,7 @@ export async function promptLoginMode(existingAccounts: ExistingAccountInfo[]): 
         } else {
           console.log(`\n✗ Failed to configure models: ${result.error}\n`);
         }
+        await promptPressEnter("Press Enter to return to menu...");
         continue;
       }
 

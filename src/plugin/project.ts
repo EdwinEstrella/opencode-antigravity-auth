@@ -15,7 +15,7 @@ const projectContextPendingCache = new Map<string, Promise<ProjectContextResult>
 
 const CODE_ASSIST_METADATA = {
   ideType: "ANTIGRAVITY",
-  platform: process.platform === "win32" ? "WINDOWS" : "MACOS",
+  platform: "PLATFORM_UNSPECIFIED",
   pluginType: "GEMINI",
 } as const;
 
@@ -242,7 +242,7 @@ export async function ensureProjectContext(auth: OAuthAuthDetails): Promise<Proj
 
   const resolveContext = async (): Promise<ProjectContextResult> => {
     const parts = parseRefreshParts(auth.refresh);
-    if (parts.managedProjectId) {
+    if (parts.managedProjectId && parts.managedProjectId !== "aicode-consumers") {
       return { auth, effectiveProjectId: parts.managedProjectId };
     }
 

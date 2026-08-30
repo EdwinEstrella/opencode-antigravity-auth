@@ -151,7 +151,7 @@ async function fetchProjectID(accessToken: string): Promise<string> {
         body: JSON.stringify({
           metadata: {
             ideType: "ANTIGRAVITY",
-            platform: process.platform === "win32" ? "WINDOWS" : "MACOS",
+            platform: "PLATFORM_UNSPECIFIED",
             pluginType: "GEMINI",
           },
         }),

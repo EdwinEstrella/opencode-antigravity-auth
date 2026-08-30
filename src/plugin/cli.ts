@@ -168,5 +168,5 @@ export async function promptLoginMode(existingAccounts: ExistingAccountInfo[]): 
   }
 }
 
-export { isTTY } from "./ui/auth-menu";
-export type { AccountStatus } from "./ui/auth-menu";
+export { isTTY, showQuotaScreen } from "./ui/auth-menu";
+export type { AccountStatus, QuotaScreenAccount, QuotaScreenModel } from "./ui/auth-menu";

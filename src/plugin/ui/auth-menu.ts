@@ -140,4 +140,118 @@ export async function showAccountDetails(account: AccountInfo): Promise<AccountA
   }
 }
 
+export interface QuotaScreenModel {
+  name: string;
+  remainingFraction?: number;
+  resetTime?: string;
+}
+
+export interface QuotaScreenAccount {
+  label: string;
+  disabled?: boolean;
+  error?: string;
+  antigravityModels: QuotaScreenModel[];
+  geminiCliModels: QuotaScreenModel[];
+}
+
+function getQuotaColor(remaining?: number): string {
+  if (typeof remaining !== 'number') return ANSI.reset;
+  if (remaining < 0.2) return ANSI.red;
+  if (remaining < 0.6) return ANSI.yellow;
+  return ANSI.green;
+}
+
+function createProgressBar(remaining?: number, width: number = 18): string {
+  if (typeof remaining !== 'number') return '░'.repeat(width) + ' ???';
+  const filled = Math.round(remaining * width);
+  const empty = width - filled;
+  const color = getQuotaColor(remaining);
+  const bar = `${color}${'█'.repeat(filled)}${ANSI.reset}${'░'.repeat(empty)}`;
+  const pctNum = `${Math.round(remaining * 100)}%`.padStart(4);
+  return `${bar} ${color}${pctNum}${ANSI.reset}`;
+}
+
+function formatResetTime(resetTime?: string): string {
+  if (!resetTime) return '';
+  const ms = Date.parse(resetTime) - Date.now();
+  if (ms <= 0) return ' (resetting...)';
+
+  const hours = ms / (1000 * 60 * 60);
+  if (hours >= 24) {
+    const days = Math.floor(hours / 24);
+    const remainingHours = Math.floor(hours % 24);
+    if (remainingHours > 0) {
+      return ` (resets in ${days}d ${remainingHours}h)`;
+    }
+    return ` (resets in ${days}d)`;
+  }
+  const totalMinutes = Math.floor(ms / (1000 * 60));
+  const remainingMinutes = totalMinutes % 60;
+  const fullHours = Math.floor(totalMinutes / 60);
+  if (fullHours > 0) {
+    return ` (resets in ${fullHours}h ${remainingMinutes}m)`;
+  }
+  return ` (resets in ${remainingMinutes}m)`;
+}
+
+export async function showQuotaScreen(accounts: QuotaScreenAccount[]): Promise<void> {
+  const items: MenuItem<string>[] = [
+    { label: '← Back to main menu', value: 'back', color: 'cyan' },
+    { label: '', value: '', separator: true },
+  ];
+
+  for (const acc of accounts) {
+    const disabledStr = acc.disabled ? ` ${ANSI.red}[disabled]${ANSI.reset}` : '';
+    items.push({ label: `${acc.label}${disabledStr}`, value: `heading-${acc.label}`, kind: 'heading' });
+
+    if (acc.error) {
+      items.push({ label: `  ${ANSI.red}Error: ${acc.error}${ANSI.reset}`, value: `err-${acc.label}`, disabled: true });
+      items.push({ label: '', value: '', separator: true });
+      continue;
+    }
+
+    if (acc.antigravityModels.length > 0) {
+      items.push({ label: `${ANSI.dim}Antigravity Quota:${ANSI.reset}`, value: `ag-hdr-${acc.label}`, kind: 'heading' });
+      for (const m of acc.antigravityModels) {
+        const bar = createProgressBar(m.remainingFraction);
+        const reset = formatResetTime(m.resetTime);
+        const name = m.name.padEnd(20);
+        items.push({
+          label: `  ${name} ${bar}${reset}`,
+          value: `ag-${acc.label}-${m.name}`,
+          disabled: true,
+        });
+      }
+    }
+
+    if (acc.geminiCliModels.length > 0) {
+      items.push({ label: `${ANSI.dim}Gemini CLI Quota:${ANSI.reset}`, value: `cli-hdr-${acc.label}`, kind: 'heading' });
+      for (const m of acc.geminiCliModels) {
+        const bar = createProgressBar(m.remainingFraction);
+        const reset = formatResetTime(m.resetTime);
+        const name = m.name.padEnd(20);
+        items.push({
+          label: `  ${name} ${bar}${reset}`,
+          value: `cli-${acc.label}-${m.name}`,
+          disabled: true,
+        });
+      }
+    }
+
+    if (acc.antigravityModels.length === 0 && acc.geminiCliModels.length === 0) {
+      items.push({ label: `  ${ANSI.dim}No quota available${ANSI.reset}`, value: `none-${acc.label}`, disabled: true });
+    }
+
+    items.push({ label: '', value: '', separator: true });
+  }
+
+  items.push({ label: '← Back to main menu', value: 'back', color: 'cyan' });
+
+  await select(items, {
+    message: 'Google Accounts Quota Overview',
+    subtitle: 'Press Enter or Esc to return to main menu',
+    clearScreen: true,
+  });
+}
+
 export { isTTY } from './ansi';

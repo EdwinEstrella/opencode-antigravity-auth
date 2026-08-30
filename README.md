@@ -1,16 +1,9 @@
 # Antigravity + Gemini CLI OAuth Plugin for Opencode
 
 [![npm version](https://img.shields.io/npm/v/opencode-antigravity-auth.svg)](https://www.npmjs.com/package/opencode-antigravity-auth)
-[![npm beta](https://img.shields.io/npm/v/opencode-antigravity-auth/beta.svg?label=beta)](https://www.npmjs.com/package/opencode-antigravity-auth)
-[![npm downloads](https://img.shields.io/npm/dw/opencode-antigravity-auth.svg)](https://www.npmjs.com/package/opencode-antigravity-auth)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![X (Twitter)](https://img.shields.io/badge/X-@dopesalmon-000000?style=flat&logo=x)](https://x.com/dopesalmon)
 
-<!-- GitAds-Verify: 6JSM9P7D6CZT8NYL51MLAPHY2Q16XMHE -->
-## GitAds Sponsored
-[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=noefabris/opencode-antigravity-auth@github)](https://gitads.dev/v1/ad-track?source=noefabris/opencode-antigravity-auth@github)
-
-Enable Opencode to authenticate against **Antigravity** (Google's IDE) via OAuth so you can use Antigravity rate limits and access models like `gemini-3.1-pro` and `claude-opus-4-6-thinking` with your Google credentials.
+Enable Opencode to authenticate against **Antigravity** (Google's IDE) via OAuth so you can use Antigravity rate limits and access models like `gemini-3.1-pro`, `gemini-3.7-flash` and `claude-opus-4-6-thinking` with your Google credentials.
 
 ## What You Get
 
@@ -50,7 +43,7 @@ Enable Opencode to authenticate against **Antigravity** (Google's IDE) via OAuth
 Paste this into any LLM agent (Claude Code, OpenCode, Cursor, etc.):
 
 ```
-Install the opencode-antigravity-auth plugin and add the Antigravity model definitions to ~/.config/opencode/opencode.json by following: https://raw.githubusercontent.com/NoeFabris/opencode-antigravity-auth/dev/README.md
+Install the opencode-antigravity-auth plugin and add the Antigravity model definitions to ~/.config/opencode/opencode.json by following: https://raw.githubusercontent.com/EdwinEstrella/opencode-antigravity-auth/main/README.md
 ```
 
 **Option B: Manual setup**
@@ -116,9 +109,11 @@ opencode run "Hello" --model=google/antigravity-claude-opus-4-6-thinking --varia
 
 | Model | Variants | Notes |
 |-------|----------|-------|
-| `antigravity-gemini-3-pro` | low, high | Gemini 3 Pro with thinking |
-| `antigravity-gemini-3.1-pro` | low, high | Gemini 3.1 Pro with thinking (rollout-dependent) |
+| `antigravity-gemini-3.7-flash` | minimal, low, medium, high | Gemini 3.7 Flash with thinking (Antigravity tiered) |
+| `antigravity-gemini-3.1-flash-lite` | — | Gemini 3.1 Flash Lite |
+| `antigravity-gemini-3.1-pro` | low, high | Gemini 3.1 Pro with thinking |
 | `antigravity-gemini-3-flash` | minimal, low, medium, high | Gemini 3 Flash with thinking |
+| `antigravity-gemini-3-pro` | low, high | Gemini 3 Pro with thinking |
 | `antigravity-claude-sonnet-4-6` | — | Claude Sonnet 4.6 |
 | `antigravity-claude-opus-4-6-thinking` | low, max | Claude Opus 4.6 with extended thinking |
 
@@ -138,7 +133,7 @@ opencode run "Hello" --model=google/antigravity-claude-opus-4-6-thinking --varia
 > - **CLI-first (`cli_first: true`):** Gemini models use Gemini CLI quota first.
 > - When a Gemini quota pool is exhausted, the plugin automatically falls back to the other pool.
 > - Claude and image models always use Antigravity.
-> Model names are automatically transformed for the target API (e.g., `antigravity-gemini-3-flash` → `gemini-3-flash-preview` for CLI).
+> Model names are automatically transformed for the target API (e.g., `antigravity-gemini-3.7-flash` → `gemini-3.7-flash-tiered` for Antigravity).
 
 **Using variants:**
 ```bash
@@ -159,14 +154,21 @@ Add this to your `~/.config/opencode/opencode.json`:
   "provider": {
     "google": {
       "models": {
-        "antigravity-gemini-3-pro": {
-          "name": "Gemini 3 Pro (Antigravity)",
-          "limit": { "context": 1048576, "output": 65535 },
+        "antigravity-gemini-3.7-flash": {
+          "name": "Gemini 3.7 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
           "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
           "variants": {
+            "minimal": { "thinkingLevel": "minimal" },
             "low": { "thinkingLevel": "low" },
+            "medium": { "thinkingLevel": "medium" },
             "high": { "thinkingLevel": "high" }
           }
+        },
+        "antigravity-gemini-3.1-flash-lite": {
+          "name": "Gemini 3.1 Flash Lite (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] }
         },
         "antigravity-gemini-3.1-pro": {
           "name": "Gemini 3.1 Pro (Antigravity)",
@@ -185,6 +187,15 @@ Add this to your `~/.config/opencode/opencode.json`:
             "minimal": { "thinkingLevel": "minimal" },
             "low": { "thinkingLevel": "low" },
             "medium": { "thinkingLevel": "medium" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
+        "antigravity-gemini-3-pro": {
+          "name": "Gemini 3 Pro (Antigravity)",
+          "limit": { "context": 1048576, "output": 65535 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "low": { "thinkingLevel": "low" },
             "high": { "thinkingLevel": "high" }
           }
         },
@@ -393,7 +404,7 @@ This usually means an MCP tool name starts with a number (for example, a 1mcp ke
 **Diagnosis:**
 1. Disable all MCP servers in your config
 2. Enable one-by-one until error reappears
-3. Report the specific MCP in a [GitHub issue](https://github.com/NoeFabris/opencode-antigravity-auth/issues)
+3. Report the specific MCP in a [GitHub issue](https://github.com/EdwinEstrella/opencode-antigravity-auth/issues)
 
 ---
 
@@ -585,7 +596,7 @@ Create `~/.config/opencode/antigravity.json` for optional settings:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/NoeFabris/opencode-antigravity-auth/main/assets/antigravity.schema.json"
+  "$schema": "https://raw.githubusercontent.com/EdwinEstrella/opencode-antigravity-auth/main/assets/antigravity.schema.json"
 }
 ```
 

@@ -5,7 +5,7 @@
  * Root cause: loadAccounts() returning null is treated as "no accounts"
  * even when the file exists but couldn't be read (permissions, corruption, etc.)
  * 
- * @see https://github.com/NoeFabris/opencode-antigravity-auth/issues/89
+ * @see https://github.com/EdwinEstrella/opencode-antigravity-auth/issues/89
  */
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";

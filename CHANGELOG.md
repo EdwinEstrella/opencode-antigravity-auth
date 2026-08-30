@@ -173,7 +173,7 @@
 
 ### Added
 
-- **Quota check and account management in auth login** - Added new `--quota` and `--manage` options to the `auth login` command for checking account quota status and managing accounts directly from the CLI ([#284](https://github.com/NoeFabris/opencode-antigravity-auth/issues/284))
+- **Quota check and account management in auth login** - Added new `--quota` and `--manage` options to the `auth login` command for checking account quota status and managing accounts directly from the CLI ([#284](https://github.com/EdwinEstrella/opencode-antigravity-auth/issues/284))
 
 - **Request timing jitter** - Added configurable random delay to requests to reduce detection patterns and improve rate limit resilience. Requests now include small random timing variations
 
@@ -200,7 +200,7 @@
 
 ### Fixed
 
-- **Prevent toast spam for rate limit warnings** - Added 5-second debounce for rate limit warning toasts to prevent notification flooding when multiple requests hit rate limits simultaneously ([#286](https://github.com/NoeFabris/opencode-antigravity-auth/issues/286))
+- **Prevent toast spam for rate limit warnings** - Added 5-second debounce for rate limit warning toasts to prevent notification flooding when multiple requests hit rate limits simultaneously ([#286](https://github.com/EdwinEstrella/opencode-antigravity-auth/issues/286))
 
 - **`getEnabledAccounts` now treats undefined as enabled** - Fixed issue where accounts without an explicit `enabled` field were incorrectly filtered out. Accounts now default to enabled when the field is undefined
 
@@ -211,7 +211,7 @@
 - **Robust handling for capacity/5xx errors** - Implemented comprehensive retry logic for model capacity and server errors, achieving parity with Antigravity-Manager's behavior
   - Reordered parsing logic to prioritize capacity checks
   - Fixed loop retry logic to prevent state pollution
-  - Added capacity retry limit to prevent infinite loops ([#263](https://github.com/NoeFabris/opencode-antigravity-auth/issues/263))
+  - Added capacity retry limit to prevent infinite loops ([#263](https://github.com/EdwinEstrella/opencode-antigravity-auth/issues/263))
 
 - **Fixed @opencode-ai/plugin dependency location** - Moved `@opencode-ai/plugin` from devDependencies to dependencies section, fixing runtime errors when the plugin was installed without dev dependencies
 
@@ -246,7 +246,7 @@
   - Root cause: When Claude calls a tool with no parameters, it returns `functionCall` without an `args` field. The response transformation only processed parts where `functionCall.args` was defined, leaving `args` as `undefined`
   - Fix: Changed condition to handle all `functionCall` parts, defaulting `args` to `{}` when missing, ensuring opencode's `state.input` always receives a valid record
 
-- **Auth headers aligned with official Gemini CLI** - Updated authentication headers to match the official Antigravity/Gemini CLI behavior, reducing "account ineligible" errors and potential bans ([#178](https://github.com/NoeFabris/opencode-antigravity-auth/issues/178))
+- **Auth headers aligned with official Gemini CLI** - Updated authentication headers to match the official Antigravity/Gemini CLI behavior, reducing "account ineligible" errors and potential bans ([#178](https://github.com/EdwinEstrella/opencode-antigravity-auth/issues/178))
   - `GEMINI_CLI_HEADERS["User-Agent"]`: `9.15.1` → `10.3.0`
   - `GEMINI_CLI_HEADERS["X-Goog-Api-Client"]`: `gl-node/22.17.0` → `gl-node/22.18.0`
   - `ANTIGRAVITY_HEADERS["User-Agent"]`: Updated to full Chrome/Electron user agent string
@@ -254,7 +254,7 @@
   - Userinfo fetch now includes `User-Agent`, `X-Goog-Api-Client` headers
   - `fetchProjectID` now uses centralized constants instead of hardcoded strings
 
-- **`quiet_mode` now properly suppresses all toast notifications** - Fixed `quiet_mode: true` in `antigravity.json` not suppressing "Status dialog dismissed" and other toast notifications ([#207](https://github.com/NoeFabris/opencode-antigravity-auth/issues/207))
+- **`quiet_mode` now properly suppresses all toast notifications** - Fixed `quiet_mode: true` in `antigravity.json` not suppressing "Status dialog dismissed" and other toast notifications ([#207](https://github.com/EdwinEstrella/opencode-antigravity-auth/issues/207))
   - Root cause: The `showToast` helper function didn't check `quietMode`, and only some call sites had manual `!quietMode &&` guards
   - Fix: Moved `quietMode` check inside `showToast` helper so all toasts are automatically suppressed when `quiet_mode: true`
 
@@ -264,4 +264,4 @@
 
 ## [1.3.0] - Previous Release
 
-See [releases](https://github.com/NoeFabris/opencode-antigravity-auth/releases) for previous versions.
+See [releases](https://github.com/EdwinEstrella/opencode-antigravity-auth/releases) for previous versions.

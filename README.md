@@ -110,6 +110,7 @@ opencode run "Hello" --model=google/antigravity-claude-opus-4-6-thinking --varia
 
 | Model | Variants | Notes |
 |-------|----------|-------|
+| `antigravity-gemini-3.8-flash` | minimal, low, medium, high | Gemini 3.8 Flash with thinking (Antigravity tiered) |
 | `antigravity-gemini-3.7-flash` | minimal, low, medium, high | Gemini 3.7 Flash with thinking (Antigravity tiered) |
 | `antigravity-gemini-3.1-flash-lite` | — | Gemini 3.1 Flash Lite |
 | `antigravity-gemini-3.1-pro` | low, high | Gemini 3.1 Pro with thinking |
@@ -134,7 +135,7 @@ opencode run "Hello" --model=google/antigravity-claude-opus-4-6-thinking --varia
 > - **CLI-first (`cli_first: true`):** Gemini models use Gemini CLI quota first.
 > - When a Gemini quota pool is exhausted, the plugin automatically falls back to the other pool.
 > - Claude and image models always use Antigravity.
-> Model names are automatically transformed for the target API (e.g., `antigravity-gemini-3.7-flash` → `gemini-3.7-flash-tiered` for Antigravity).
+> Model names are automatically transformed for the target API (e.g., `antigravity-gemini-3.8-flash` → `gemini-3.8-flash-tiered` for Antigravity).
 
 **Using variants:**
 ```bash
@@ -155,6 +156,17 @@ Add this to your `~/.config/opencode/opencode.json`:
   "provider": {
     "google": {
       "models": {
+        "antigravity-gemini-3.8-flash": {
+          "name": "Gemini 3.8 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "minimal": { "thinkingLevel": "minimal" },
+            "low": { "thinkingLevel": "low" },
+            "medium": { "thinkingLevel": "medium" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
         "antigravity-gemini-3.7-flash": {
           "name": "Gemini 3.7 Flash (Antigravity)",
           "limit": { "context": 1048576, "output": 65536 },

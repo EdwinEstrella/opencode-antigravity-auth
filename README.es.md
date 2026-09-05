@@ -106,6 +106,7 @@ opencode run "Hola" --model=google/antigravity-claude-opus-4-6-thinking --varian
 
 | Modelo | Variantes | Notas |
 |-------|----------|-------|
+| `antigravity-gemini-3.8-flash` | minimal, low, medium, high | Gemini 3.8 Flash con thinking (Antigravity tiered) |
 | `antigravity-gemini-3.7-flash` | minimal, low, medium, high | Gemini 3.7 Flash con thinking (Antigravity tiered) |
 | `antigravity-gemini-3.1-flash-lite` | — | Gemini 3.1 Flash Lite |
 | `antigravity-gemini-3.1-pro` | low, high | Gemini 3.1 Pro con thinking |
@@ -137,6 +138,17 @@ Agrega esto a tu `~/.config/opencode/opencode.json`:
   "provider": {
     "google": {
       "models": {
+        "antigravity-gemini-3.8-flash": {
+          "name": "Gemini 3.8 Flash (Antigravity)",
+          "limit": { "context": 1048576, "output": 65536 },
+          "modalities": { "input": ["text", "image", "pdf"], "output": ["text"] },
+          "variants": {
+            "minimal": { "thinkingLevel": "minimal" },
+            "low": { "thinkingLevel": "low" },
+            "medium": { "thinkingLevel": "medium" },
+            "high": { "thinkingLevel": "high" }
+          }
+        },
         "antigravity-gemini-3.7-flash": {
           "name": "Gemini 3.7 Flash (Antigravity)",
           "limit": { "context": 1048576, "output": 65536 },

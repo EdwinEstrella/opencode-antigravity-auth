@@ -116,6 +116,38 @@ describe("resolveModelWithTier", () => {
       expect(result.actualModel).toBe("gemini-3.1-pro-low");
       expect(result.thinkingLevel).toBe("low");
     });
+
+    it("antigravity-gemini-3.7-flash resolves to gemini-3.7-flash-tiered", () => {
+      const result = resolveModelWithTier("antigravity-gemini-3.7-flash");
+      expect(result.actualModel).toBe("gemini-3.7-flash-tiered");
+      expect(result.thinkingLevel).toBe("low");
+      expect(result.quotaPreference).toBe("antigravity");
+    });
+
+    it("antigravity-gemini-3.7-flash-medium gets thinkingLevel from tier", () => {
+      const result = resolveModelWithTier("antigravity-gemini-3.7-flash-medium");
+      expect(result.actualModel).toBe("gemini-3.7-flash-tiered");
+      expect(result.thinkingLevel).toBe("medium");
+    });
+
+    it("antigravity-gemini-3.8-flash resolves to gemini-3.8-flash-tiered", () => {
+      const result = resolveModelWithTier("antigravity-gemini-3.8-flash");
+      expect(result.actualModel).toBe("gemini-3.8-flash-tiered");
+      expect(result.thinkingLevel).toBe("low");
+      expect(result.quotaPreference).toBe("antigravity");
+    });
+
+    it("antigravity-gemini-3.8-flash-medium gets thinkingLevel from tier", () => {
+      const result = resolveModelWithTier("antigravity-gemini-3.8-flash-medium");
+      expect(result.actualModel).toBe("gemini-3.8-flash-tiered");
+      expect(result.thinkingLevel).toBe("medium");
+    });
+
+    it("gemini-3.8-flash alias resolves to gemini-3.8-flash-tiered", () => {
+      const result = resolveModelWithTier("gemini-3.8-flash-medium");
+      expect(result.actualModel).toBe("gemini-3.8-flash-tiered");
+      expect(result.thinkingLevel).toBe("medium");
+    });
   });
 
   describe("Claude thinking models default budget", () => {

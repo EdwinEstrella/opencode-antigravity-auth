@@ -51,6 +51,10 @@ export const MODEL_ALIASES: Record<string, string> = {
   "gemini-3.7-flash-low": "gemini-3.7-flash-tiered",
   "gemini-3.7-flash-medium": "gemini-3.7-flash-tiered",
   "gemini-3.7-flash-high": "gemini-3.7-flash-tiered",
+  "gemini-3.8-flash": "gemini-3.8-flash-tiered",
+  "gemini-3.8-flash-low": "gemini-3.8-flash-tiered",
+  "gemini-3.8-flash-medium": "gemini-3.8-flash-tiered",
+  "gemini-3.8-flash-high": "gemini-3.8-flash-tiered",
   "gemini-3.1-flash-lite": "gemini-3.1-flash-lite",
 
   // Claude proxy names (gemini- prefix for compatibility)
@@ -190,8 +194,8 @@ export function resolveModelWithTier(requestedModel: string, options: ModelResol
   
   let antigravityModel = modelWithoutQuota;
   if (skipAlias) {
-    if (baseName === "gemini-3.7-flash") {
-      antigravityModel = "gemini-3.7-flash-tiered";
+    if (baseName === "gemini-3.7-flash" || baseName === "gemini-3.8-flash") {
+      antigravityModel = `${baseName}-tiered`;
     } else if (isGemini3Pro && !tier && !isImageModel) {
       antigravityModel = `${modelWithoutQuota}-low`;
     } else if (isGemini3Flash && tier) {
